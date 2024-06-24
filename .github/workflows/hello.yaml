@@ -1,0 +1,34 @@
+name: Update Workflow Name
+
+on:
+  workflow_dispatch:
+    inputs:
+      new_name:
+        description: 'New name for the workflow'
+        required: true
+        type: choice
+        options:
+          - Workflow Name 1
+          - Workflow Name 2
+          - Workflow Name 3
+        default: 'Workflow Name 1'
+
+jobs:
+  update_workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Update workflow name
+      run: |
+        sed -i 's/^name: .*/name: '"${{ github.event.inputs.new_name }}"'/' .github/workflows/main.yml
+
+    - name: Commit changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        git add .github/workflows/main.yml
+        git commit -m "Update workflow name to ${{ github.event.inputs.new_name }}"
+        git push
