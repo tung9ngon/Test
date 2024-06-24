@@ -23,9 +23,9 @@ on:
 
 jobs:
   update_workflow:
-    name: ${{github.event.inputs.environment.options}} ${{github.event.inputs.environment.repo}}
+    name: ${{github.event.inputs.environment}} ${{github.event.inputs.repo}}
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      run: echo "${{github.event.inputs.environment.options}} ${{github.event.inputs.environment.repo}}""
+      run: echo "${{github.event.inputs.environment}} ${{github.event.inputs.repo}}"
