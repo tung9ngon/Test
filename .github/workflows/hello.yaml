@@ -23,7 +23,7 @@ on:
 
 jobs:
   update_workflow:
-    name: Build and put image ${{github.event.inputs.environment.options}} ${{github.event.inputs.environment.repo}}
+    name: ${{github.event.inputs.environment.options}} ${{github.event.inputs.environment.repo}}
     runs-on: ubuntu-latest
 
     steps:
