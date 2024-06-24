@@ -3,23 +3,35 @@ name: Update Workflow Name
 on:
   workflow_dispatch:
     inputs:
-      new_name:
-        description: 'New name for the workflow'
+      environment:
+        description: 'Chose environment'
         required: true
         type: choice
         options:
-          - Workflow Name 1
-          - Workflow Name 2
-          - Workflow Name 3
-        default: 'Workflow Name 1'
+          - n1
+          - n2
+          - n3
+        default: 'n1'
+      repo:
+        description: 'Chose repo'
+        required: true
+        type: choice
+        options:
+          - be
+          - fe
+        default: 'be'
 
 jobs:
   update_workflow:
+    name: Build and put image ${{github.event.inputs.environment.options}} ${{github.event.inputs.environment.repo}}
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+
+    - name: Verify file exists
+      run: ls -al .github/workflows
 
     - name: Update workflow name
       run: |
