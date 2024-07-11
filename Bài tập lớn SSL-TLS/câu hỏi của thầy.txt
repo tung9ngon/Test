@@ -1,0 +1,53 @@
+I.Tác dụng của từng giao thức:
+
+- SSL Handshake Protocol: Giao thức bắt tay của SSL có nhiệm vụ trao đổi các thông điệp xác thực thực thể và thiết lập các thông số cho phiên 
+làm việc.
+o Thương lượng thuật toán và cơ chế mã hóa để bảo vệ dữ liệu được 
+gửi trong SSL Record
+o Trao đổi khóa
+o Xác thực server và client
+
+- SSL Change Cipher Spec Protocol: (giao thức đơn giản nhất) Giao thức thiết lập việc sử dụng các bộ mã hóa được hỗ trợ bởi cả 2 bên tham gia phiên truyền thông.
+o Thông báo kết quả của quá trình Handshake
+
+- SSL Alert Protocol: Giao thức cảnh báo của SSL.
+o Thông báo lỗi
+
+- SSL Record Protocol: Giao thức bản ghi của SSL có nhiệm vụ tạo đường hầm an toàn để chuyển thông tin đảm bảo tính bí mật, toàn vẹn và xác thực.
+o Phân đoạn gói dữ liệu
+o Nén
+o Xác thực message và đảm bảo tính toàn vẹn
+o Mã hóa
+
+
+II. Trong bộ giao thức ssl/tls thì handshake và record là quan trọng nhất:
+
+1. handshake làm j và đảm nhiệm chức năng j?
+
+Là Giao thức bắt tay của SSL có nhiệm vụ trao đổi các thông điệp xác thực thực thể và thiết lập các thông số cho phiên làm việc.
+
+o Thương lượng thuật toán và cơ chế mã hóa để bảo vệ dữ liệu được gửi trong SSL Record
+o Trao đổi khóa
+o Xác thực server và client
+
+
+server gửi certificate bao gồm khóa công khai, id của server, chữ ký số CA cho client
+
+client kiểm tra certificate của server
+
+client dùng sinh ra một khó phiên ngẫu nhiên, sau đó mã hóa khóa phiên đó = khóa công khai của server rồi gửi đoạn mã hóa đó cho server, server sẽ giải mã bằng khóa riêng của mình
+
+III. SSL Record
+Quá trình xử lý dữ liệu bởi SSL Record tại bên gửi gồm các bước:
+- Phân mảnh dữ liệu (Fragment): Dữ liệu từ ứng dụng (Application Data) được phân mảnh thành các khối cho phù hợp với việc đóng gói và truyền của các lớp giao thức tầng thấp hơn.
+- Nén dữ liệu (Compress): Từng khối dữ liệu được nén để giảm kích thước.
+Bước nén dữ liệu là không bắt buộc.
+- Thêm MAC (Add MAC – Add Message Authentication Code): Tính toán giá trị MAC (sử dụng hàm băm có khóa) cho khối dữ liệu nén và ghép giá trị
+MAC vào khối dữ liệu. Việc thêm MAC và kiểm tra MAC ở bên nhận để đảm bảo tính toàn vẹn và xác thực khối dữ liệu.
+- Mã hóa (Encrypt): Mã hóa khối dữ liệu (gồm khối dữ liệu nén và MAC) để đảm bảo tính bí mật sử dụng mã hóa khóa đối xứng với khóa phiên.
+- Thêm đề mục của SSL Record (Append SSL Record Header): thêm đề mục của SSL Record vào khối dữ liệu đã mã hóa và chuyển xuống tầng giao vận 
+để chuyển sang bên nhận.
+Quá trình xử lý dữ liệu khối dữ liệu nhận được tại bên nhận được thực hiện bởi SSL Record theo trình tự ngược lại, gồm các bước: Tách đề mục của SSL Record, Giải mã, Tách và kiểm tra MAC, Giải nén và Ghép các mảnh dữ liệu thành chuỗi dữ liệu để chuyển cho lớp ứng dụng.
+
+
+Cách kiểm tra MAC: tính lại MAC trên dữ liệu nhận đc, nếu 2 MAC trùng nhau thì ok.
